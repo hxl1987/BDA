@@ -1,5 +1,6 @@
 #Big Data Audit
-By [Kotobukki](https://github.com/kotobukki/).
+By [Kotobukki](https://github.com/kotobukki/)
+[中文版README](https://github.com/kotobukki/BigDataAudit/blob/master/ChineseREADME.md)
 
 [![Build Status](https://camo.githubusercontent.com/f8bbfdc05d49bbdad27dba5693bccade8cd36e12/68747470733a2f2f7472617669732d63692e6f72672f6a696d656e6269616e2f446174614d696e696e672e7376673f6272616e63683d6d6173746572)](https://travis-ci.org/kotobukki/BigDataAudit)
 [![Support](https://camo.githubusercontent.com/4a42460f88f172b10e916fec11857648a8a2f2c8/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f706c6174666f726d2d6f73782532466c696e757825324677696e646f77732d677265656e2e737667)](https://travis-ci.org/kotobukki/BigDataAudit)
