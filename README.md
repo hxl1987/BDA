@@ -7,6 +7,7 @@ By [Kotobukki](https://github.com/kotobukki/).
 
 ##Usage
 The entrance file of the program is main.py
+
 You can use the following command to see the usage
 ```
 $python main.py -h
@@ -23,7 +24,9 @@ optional arguments:
   -h, --help      show this help message and exit
 ```
 There is mainly 2 functions which are Hadoop and Spark vuln check
+
 ##Hadoop
+
 You could still use `-h` to see the usage
 ```
 python main.py hadoop -h
@@ -35,7 +38,9 @@ positional arguments:
 optional arguments:
   -h, --help  show this help message and exit
 ```
+
 `confFolder`is the folder for config files of Hadoop. It could be the `conf` folder when installing(like `/usr/local/hadoop/conf/hadoop/`)，you can also copy these files to the specific folder but remind that filename should be the same as in hadoop.json，for example, the following content is system default file for checking known security factor's file in JSON.
+
 ```json
 {
   "authentication": {
@@ -77,6 +82,7 @@ optional arguments:
 }
 ```
 Core-site is the checking filename ，next level is the setting，it 's father level like `encry`means chacking encrypted security questions. 
+
 This file users could add or delet by themselves
 
 With this setting and run the script
