@@ -9,10 +9,7 @@ class HadoopCheck(object):
 	def __init__(self, path, security_file):
 		self._path = path
 		self._security_file = security_file
-
-	"""
-	load json
-	"""
+	#nonono	
 	def load_json(self):
 		try:
 			fp = open(self._security_file)
