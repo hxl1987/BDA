@@ -25,7 +25,7 @@ def CheckSpark(args):
 	SparkCheck.run(abs_path)
 
 def main():
-	parser = argparse.ArgumentParser(description="This is a tool for detectiong the security problem of spark and hadoop!")
+	parser = argparse.ArgumentParser(description="This is a tool for detecting the security problem of spark and hadoop!")
 
 	subparsers = parser.add_subparsers(help='commands')
 
