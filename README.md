@@ -20,30 +20,30 @@ usage: main.py [-h] {hadoop,spark} ...
 This is a tool for detectiong the security problem of hadoop!
 
 positional arguments:
-  {hadoop,spark}  commands
-    hadoop        check security of hadoop
-    spark         check security of spark
+  {Hadoop,Spark,MySQL}  commands
+    Hadoop        Check the security of Hadoop
+    Spark         Check the security of Spark
+    MySQL         Check MySQL database setting
 
 optional arguments:
   -h, --help      show this help message and exit
 ```
-There is mainly 2 functions which are Hadoop and Spark vuln check
 
 Hadoop
 ------
 You could still use `-h` to see the usage
 ```
-python main.py hadoop -h
-usage: main.py hadoop [-h] confFolder
+python main.py Hadoop -h
+usage: main.py Hadoop [-h] confFolder
 
 positional arguments:
-  confFolder  the dir of hadoop configuration files
+  confFolder  the dir of Hadoop configuration files
 
 optional arguments:
   -h, --help  show this help message and exit
 ```
 
-`confFolder`is the folder for config files of Hadoop. It could be the `conf` folder when installing(like `/usr/local/hadoop/conf/hadoop/`)，you can also copy these files to the specific folder but remind that filename should be the same as in hadoop.json，for example, the following content is system default file for checking known security factor's file in JSON.
+`confFolder`is the folder for config files of Hadoop. It could be the `conf` folder when installing(like `/usr/local/hadoop/conf/hadoop/`), you can also copy these files to the specific folder but remind that filename should be the same as in hadoop.json, for example, the following content is system default file for checking known security factor's file in JSON.
 
 ```json
 {
@@ -85,7 +85,7 @@ optional arguments:
   }
 }
 ```
-Core-site is the checking filename ，next level is the setting，it 's father level like `encry`means chacking encrypted security questions. 
+Core-site is the checking filename, next level is the setting, it 's father level like `encry`means chacking encrypted security questions. 
 
 This file users could add or delet by themselves
 
@@ -108,13 +108,13 @@ $ python main.py hadoop ./hadoop
 
 Spark
 -----
-It's much as same as Hadoop，you need point to the setting folder，but difference is that Spark's defalt setting file has only one `spark-defaults.conf`,DO NOT copy to other folder。
+It's much as same as Hadoop, you need to point to the setting folder, but difference is that Spark's defalt setting file has only one `spark-defaults.conf`, DO NOT copy to other folder.
 
-As the same as Hadoop checking , it provides a setting that can be configured. It's in the root directory of Spark and named `security.ini`.
+As same as Hadoop checking , it provides a setting that can be configured. It's in the root directory of Spark and named `security.ini`.
 
 Example：
 ```
-$ python main.py spark ./spark/
+$ python main.py Spark ./spark/
 [Info]: Start to check the security of spark...
 [Warning]: Suggest to add option spark.authenticate = true if your spark runs on standalone mode
 [Warning]: Suggest to add option spark.authenticate.secret if your spark runs on yarn mode
@@ -123,6 +123,10 @@ $ python main.py spark ./spark/
 
 ```
 
+MySQL
+-----
+Same as before.   
+
 TODO
 -----
-Add MySQL and Oracle module
+Code style fix.
