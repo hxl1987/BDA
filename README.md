@@ -13,7 +13,7 @@ The entrance file of the program is main.py
 You can use the following command to see the usage
 ```
 $python main.py -h
-usage: main.py [-h] {hadoop,spark} ...
+usage: main.py [-h] {Hadoop,Spark, MySQL} ...
 
 This is a tool for detectiong the security problem of hadoop!
 
@@ -89,7 +89,7 @@ This file users could add or delet by themselves
 
 With this setting and run the script
 ```
-$ python main.py hadoop ./hadoop
+$ python main.py Hadoop ./hadoop
 [Info]: Begining to check security: authentication
 [Info]: >> Check file: core-site.xml
 [Pass]: Your hadoop.security.authentication setting is safe!
