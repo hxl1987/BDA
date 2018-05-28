@@ -1,5 +1,9 @@
 Big Data Audit
 ==============
+
+Sorry, this repo is in review by third-party. Stars, issues, and pull requests are wiped out.
+==============
+
 By [Kotobukki](https://github.com/kotobukki/)
 
 [![Build Status](https://camo.githubusercontent.com/f8bbfdc05d49bbdad27dba5693bccade8cd36e12/68747470733a2f2f7472617669732d63692e6f72672f6a696d656e6269616e2f446174614d696e696e672e7376673f6272616e63683d6d6173746572)](https://travis-ci.org/kotobukki/BDA)
