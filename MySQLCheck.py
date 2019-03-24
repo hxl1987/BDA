@@ -3,10 +3,9 @@
 from utils import *
 
 try:
-    import MySQLdb
-    import MySQLdb.cursors
+    import pymysql
 except:
-    Log.log_warn("MySQLdb is not installed!")
+    Log.log_warn("PyMySQL is not installed!")
 
 
 class ConfScan(object):
@@ -20,45 +19,44 @@ class ConfScan(object):
 
     def connect(self):
         try:
-            self.conn = MySQLdb.connect(host=self.__host, user=self.__username, passwd=self.__password,
-                                        port=self.__port, cursorclass=MySQLdb.cursors.DictCursor)
+            self.conn = pymysql.connect(host=self.__host, user=self.__username, passwd=self.__password,
+                                        port=self.__port)
             self.cursor = self.conn.cursor()
-        except MySQLdb.Error as e:
-            Log.log_error('MySql Error %%s' % str(e))
+        except:
+            Log.log_error('MySql Error')
+            sys.exit(0)
 
-    def has_useless_db(self, dbs=list):
+    def check_weak_password(self):
+        if check_pwd(self.__password):
+            Log.log_pass('Password is strong')
+        else:
+            Log.log_warn('Password is weak')
+
+    def has_useless_db(self, dbs):
         if self.cursor is None:
             self.connect()
-        self.cursor.execute("show databases")
+        self.cursor.execute("SHOW DATABASES")
         for data in self.cursor.fetchall():
-            if data['Database'] in dbs:
-                Log.log_warn("have useless db %s " % data['Database'])
+            if data[0] in dbs:
+                Log.log_warn("Have useless DB %s" % data[0])
 
     def has_obsolete_account(self, username=""):
         if self.conn is None:
             self.connect()
         res = self.cursor.execute("SELECT * FROM mysql.user WHERE user='%s'" % username)
         if res > 0:
-            Log.log_warn("has obsolete account!")
+            Log.log_warn("Have obsolete account!")
         else:
-            Log.log_pass("has no obsolete account")
+            Log.log_pass("Have no obsolete account")
 
     def load_file(self):
         if self.conn is None:
             self.connect()
-        res = self.cursor.execute("select load_file('/etc/passwd')")
-
-    def log_status(self, conf=dict):
-        if self.conn is None:
-            self.connect()
-        self.cursor.execute("show variables like '%log%'")
-        res = self.cursor.fetchall()
-        for data in res:
-            key = data['Variable_name']
-            val = data['Value']
-            if key in conf.keys():
-                if val != conf[key]:
-                    Log.log_warn('set %s = %s is not safe!' % (key, val))
+        try:
+            self.cursor.execute("SELECT HEX(LOAD_FILE('/etc/passwd')) INTO DUMPFILE '/tmp/test'")
+            Log.log_warn("--secure-file-priv is not enabled")
+        except:
+            Log.log_pass("--secure-file-priv is enabled")
 
     def check_user_grants(self, username):
         if self.cursor is None:
@@ -74,9 +72,9 @@ class ConfScan(object):
             for key, value in row.items():
                 if value == 'Y':
                     flag = 1
-                    Log.log_warn('setting %s = %s is suggested!' % (key, 'N'))
+                    Log.log_warn('Setting %s = %s is suggested!' % (key, 'N'))
         if not flag:
-            Log.log_pass('All the setting are approriate!')
+            Log.log_pass('All the settings are approriate!')
 
     def check_user_db_grants(self, username):
         if self.cursor is None:
@@ -91,9 +89,9 @@ class ConfScan(object):
             for key, value in row.items():
                 if value == 'Y':
                     flag = 1
-                    Log.log_warn('setting %s = %s is suggested!' % (key, 'N'))
+                    Log.log_warn('Setting %s = %s is suggested!' % (key, 'N'))
         if not flag:
-            Log.log_pass('All the setting are appropriate!')
+            Log.log_pass('All the settings are appropriate!')
 
     def close(self):
         if self.cursor is not None:
@@ -102,26 +100,17 @@ class ConfScan(object):
             self.conn.close()
 
 
-def run(setting_file_path):
-    root = ET.parse(setting_file_path).getroot()
-    username = root.find('.//user/username').text
-    password = root.find(".//user/password").text
-    test = ConfScan(username, password)
+def run(un, pw, host="127.0.0.1", port=3306):
+    test = ConfScan(un, pw, host, port)
     test.connect()
+    Log.log_info("Checking password...")
+    test.check_weak_password()
     Log.log_info("Checking useless databases...")
-    test.has_useless_db(dbs={'test', 'mysql', 'information_schema'})
+    test.has_useless_db({'test', 'mysql', 'information_schema'})
     Log.log_info("Checking useless or abandoned users...")
     test.has_obsolete_account("")
-    Log.log_info("Checking if the local file of databases is encrypted...")
+    Log.log_info("Checking if --secure-file-priv is enabled...")
     test.load_file()
-    Log.log_info("Checking log settings...")
-    log_conf = dict()
-    log_conf_dom = root.find(".//conf/log")
-    for item in log_conf_dom:
-        key = item.find('./key').text
-        val = item.find('./val').text
-        log_conf[key] = val
-    test.log_status(log_conf)
     Log.log_info('Check selected user privilege (1/2)...')
     test.check_user_grants('test')
     Log.log_info('Check selected user privilege (2/2)...')
@@ -129,4 +118,4 @@ def run(setting_file_path):
 
 
 if __name__ == '__main__':
-    run("conf.xml")
+    run("root", "")

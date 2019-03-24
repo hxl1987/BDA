@@ -24,13 +24,18 @@ def CheckSpark(args):
 
 
 def CheckMySQL(args):
-    path = args.confFolder
-    if not os.path.exists(path):
-        Log.log_error("'%s' is not a dir!" % path)
-        sys.exit(0)
-    abs_path = os.path.abspath(path)
+    un = args.username
+    pw = args.password
+    if args.host:
+        host = args.host
+    else:
+        host = "127.0.0.1"
+    if args.port:
+        port = args.port
+    else:
+        port = 3306
     import MySQLCheck
-    MySQLCheck.run(abs_path)
+    MySQLCheck.run(un, pw, host=host, port=port)
 
 
 def main():
@@ -47,7 +52,11 @@ def main():
     setting_check_parser.set_defaults(func=CheckSpark)
     # MySQL
     setting_check_parser = subparsers.add_parser('MySQL', help='Check MySQL database setting')
-    setting_check_parser.add_argument('confFolder', action='store', help='the dir of MySQL configuration files')
+    setting_check_parser.add_argument('username', action='store', help='the username of MySQL')
+    setting_check_parser.add_argument('password', action='store', help='the password of MySQL')
+    setting_check_parser.add_argument('--host', nargs='?', action='store', help='the host of MySQL, default: 127.0.0.1')
+    setting_check_parser.add_argument('--port', nargs='?', action='store', help='the port of MySQL, default: 3306')
+
     setting_check_parser.set_defaults(func=CheckMySQL)
     args = parser.parse_args()
     args.func(args)
