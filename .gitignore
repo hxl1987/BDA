@@ -1,0 +1,43 @@
+*.pyc
+.svn
+build.sh
+*.py.original
+.DS_Store
+*.*~
+*.log
+*.log.wf
+doc.*
+doc
+github_doc
+output
+release
+cscope.files
+cscope.in.out
+cscope.out
+cscope.po.out
+issue.info
+tags
+*.un~
+*.tar
+*/*.tar.gz
+
+### folders ###
+build
+tmp
+MANIFEST
+
+### macOS template                                                                                     
+## General                                                                                              
+.DS_Store                                                                                              
+.AppleDouble                                                                                           
+.LSOverride 
+
+# Files that might appear in the root of a volume                                                   
+.DocumentRevisions-V100                                                                             
+.fseventsd                                                                                          
+.Spotlight-V100                                                                                     
+.TemporaryItems                                                                                     
+.Trashes                                                                                            
+.VolumeIcon.icns                                                                                    
+.com.apple.timemachine.donotpresent                                                                 
+
