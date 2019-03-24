@@ -1,22 +1,22 @@
 #!/usr/bin/python
 # -*- coding:utf-8 -*- 
-import os, sys
-import re
+from utils import *
+
 
 class ConfParser(object):
 
-	def __init__(self, conf_type=0):
+	def __init__(self):
 		self._conf_type = 0
 		self._kv_map = dict()
 
-	def read(self,file):
+	def read(self, file):
 		if not os.path.exists(file):
-			print "The file does not exists!"
+			Log.log_error("The file does not exists!")
 			sys.exit(0)
 		if self._conf_type == 0:
 			self.read_sp_conf(file)
 		else:
-			print "developing!"
+			Log.log_error("Developing!")
 
 	def read_sp_conf(self, file):
 		fp = open(file)
@@ -37,4 +37,3 @@ class ConfParser(object):
 if __name__ == '__main__':
 	test = ConfParser()
 	test.read("../spark/spark-defaults.conf")
-	print test.get_options()

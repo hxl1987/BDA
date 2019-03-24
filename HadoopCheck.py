@@ -1,28 +1,24 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*- 
-import json, sys, os
-from Logger import Log
-import xml.etree.ElementTree as ET
+from utils import *
+
 
 class HadoopCheck(object):
 	
 	def __init__(self, path, security_file):
 		self._path = path
 		self._security_file = security_file
-	#nonono	
+
 	def load_json(self):
 		try:
 			fp = open(self._security_file)
 			content = fp.read()
+			fp.close()
 			security_conf_json = json.loads(content)
-		except Exception, e:
+		except Exception as e:
 			Log.log_error(str(e))
 			sys.exit(0)
-		finally:
-			if fp is not None:
-				fp.close()
 		return security_conf_json
-	
 
 	def check(self):
 		security_conf_json = self.load_json()
@@ -46,7 +42,6 @@ class HadoopCheck(object):
 			if has_threat == False:
 				Log.log_pass("Your %s setting is safe!" % key)
 
-
 	def parse_xml(self, file):
 		res = dict()
 		try:
@@ -56,20 +51,20 @@ class HadoopCheck(object):
 				name = item.find(".//name").text
 				value = item.find(".//value").text
 				res[name] = value
-		except Exception, e:
+		except Exception as e:
 			Log.log_error(str(e))
 			sys.exit(0)
 		return res
 
-def run(confFolder):
-	if not os.path.exists(confFolder):
+
+def run(conf_folder):
+	if not os.path.exists(conf_folder):
 		Log.log_error("The folder doest not exists!")
 		sys.exit(0)
-	test = HadoopCheck(confFolder, "hadoop/hadoop.json")
+	test = HadoopCheck(conf_folder, "hadoop/hadoop.json")
 	test.check()
-	
+
+
 if __name__ == "__main__":
 	test = HadoopCheck()("hadoop", "hadoop.json")
 	test.check()
-	
-	
