@@ -8,7 +8,7 @@ except:
     Log.log_warn("PyMySQL is not installed!")
 
 
-class ConfScan(object):
+class MySQLCheck(object):
     def __init__(self, username, password, host='127.0.0.1', port=3306):
         self.__username = username
         self.__password = password
@@ -101,7 +101,7 @@ class ConfScan(object):
 
 
 def run(un, pw, host="127.0.0.1", port=3306):
-    test = ConfScan(un, pw, host, port)
+    test = MySQLCheck(un, pw, host, port)
     test.connect()
     Log.log_info("Checking password...")
     test.check_weak_password()

@@ -22,26 +22,28 @@ The entrance file of the program is main.py
 
 You can use the following command to see the usage
 ```
-$python main.py -h
-usage: main.py [-h] {Hadoop,Spark, MySQL} ...
+$ python main.py -h
+usage: main.py [-h] {Hadoop,Spark,MySQL,Redis} ...
 
-This is a tool for detectiong the security problem of hadoop!
+This is a tool for detecting the security problem of spark and hadoop!
 
 positional arguments:
-  {Hadoop,Spark,MySQL}  commands
-    Hadoop        Check the security of Hadoop
-    Spark         Check the security of Spark
-    MySQL         Check MySQL database setting
+  {Hadoop,Spark,MySQL,Redis}
+                        commands
+    Hadoop              check the security of hadoop
+    Spark               Check the security of spark
+    MySQL               Check MySQL database setting
+    Redis               Check the security of redis
 
 optional arguments:
-  -h, --help      show this help message and exit
+  -h, --help            show this help message and exit
 ```
 
 
 MySQL
 -----
 ```
-python main.py MySQL -h
+$ python main.py MySQL -h
 usage: main.py MySQL [-h] [--host [HOST]] [--port [PORT]] username password
 
 positional arguments:
@@ -56,7 +58,7 @@ optional arguments:
 
 An example of MySQL database with credential root:root
 ```
-python main.py MySQL root root
+$ python main.py MySQL root root
 [Info]: Checking password...
 [Warning]: Password is weak
 [Info]: Checking useless databases...
@@ -78,11 +80,41 @@ Checks:
 * --secure-file-priv option
 * 'test' user privilege
 
+Redis
+-----
+```
+$ python main.py Redis -h
+usage: main.py Redis [-h] confFolder
+
+positional arguments:
+  confFolder  the dir of redis configuration files
+
+optional arguments:
+  -h, --help  show this help message and exit
+```
+
+An example of Redis with install dir /etc/redis
+```
+$ python main.py Redis /etc/redis
+[Info]: Checking exposure...
+[Pass]: Redis is only accessible on this computer
+[Info]: Checking setting of password...
+[Pass]: Password is strong
+[Info]: Checking commands...
+[Pass]: Config command is protected strongly
+[Warning]: Flushall command is exposed to every login user, try renaming this command
+[Warning]: Flushdb command is exposed to every login user, try renaming this command
+```
+Checks:
+* exposure to internet
+* weak/no password
+* command renaming
+
 Hadoop
 ------
 You could still use `-h` to see the usage
 ```
-python main.py Hadoop -h
+$ python main.py Hadoop -h
 usage: main.py Hadoop [-h] confFolder
 
 positional arguments:

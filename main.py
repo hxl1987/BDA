@@ -38,6 +38,16 @@ def CheckMySQL(args):
     MySQLCheck.run(un, pw, host=host, port=port)
 
 
+def CheckRedis(args):
+    path = args.confFolder
+    if not os.path.exists(path):
+        Log.log_error("'%s' is not a dir!" % path)
+        sys.exit(0)
+    abs_path = os.path.abspath(path)
+    import RedisCheck
+    RedisCheck.run(abs_path)
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="This is a tool for detecting the security problem of spark and hadoop!")
@@ -56,8 +66,11 @@ def main():
     setting_check_parser.add_argument('password', action='store', help='the password of MySQL')
     setting_check_parser.add_argument('--host', nargs='?', action='store', help='the host of MySQL, default: 127.0.0.1')
     setting_check_parser.add_argument('--port', nargs='?', action='store', help='the port of MySQL, default: 3306')
-
     setting_check_parser.set_defaults(func=CheckMySQL)
+    # Redis
+    setting_check_parser = subparsers.add_parser('Redis', help='Check the security of redis')
+    setting_check_parser.add_argument('confFolder', action='store', help='the dir of redis configuration files')
+    setting_check_parser.set_defaults(func=CheckRedis)
     args = parser.parse_args()
     args.func(args)
 
