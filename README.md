@@ -37,6 +37,47 @@ optional arguments:
   -h, --help      show this help message and exit
 ```
 
+
+MySQL
+-----
+```
+python main.py MySQL -h
+usage: main.py MySQL [-h] [--host [HOST]] [--port [PORT]] username password
+
+positional arguments:
+  username       the username of MySQL
+  password       the password of MySQL
+
+optional arguments:
+  -h, --help     show this help message and exit
+  --host [HOST]  the host of MySQL, default: 127.0.0.1
+  --port [PORT]  the port of MySQL, default: 3306
+```
+
+An example of MySQL database with credential root:root
+```
+python main.py MySQL root root
+[Info]: Checking password...
+[Warning]: Password is weak
+[Info]: Checking useless databases...
+[Warning]: Have useless DB information_schema
+[Warning]: Have useless DB mysql
+[Info]: Checking useless or abandoned users...
+[Pass]: Have no obsolete account
+[Info]: Checking if --secure-file-priv is enabled...
+[Pass]: --secure-file-priv is enabled
+[Info]: Check selected user privilege (1/2)...
+[Pass]: All the settings are approriate!
+[Info]: Check selected user privilege (2/2)...
+[Pass]: All the settings are appropriate!
+```
+Checks:
+* weak password
+* useless database
+* abandoned users
+* --secure-file-priv option
+* 'test' user privilege
+
 Hadoop
 ------
 You could still use `-h` to see the usage
@@ -130,8 +171,3 @@ $ python main.py Spark ./spark/
 [Warning]: Suggest to set option spark.eventlog.enabled = true
 
 ```
-
-MySQL
------
-Same as before.   
-
